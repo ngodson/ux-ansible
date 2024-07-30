@@ -1,0 +1,32 @@
+-
+  name: First playbook
+  hosts: localhost
+
+  tasks:
+    - include_vars: vars.txt
+    - name: Hello world
+      command: echo "Hello world"
+
+    - name: Date
+      command: date
+
+    - name: Display all directories
+      command: ls -lrt chdir=/etc
+
+    - name: Line in file
+      lineinfile:
+        path: file.txt
+        line: '{{ ip_address }} '
+      register: var
+
+    - name: run on condition
+      command: echo "Running due to line in file"
+      when: var.changed == true
+
+
+#    - name: create new file
+#      command: touch playbook.txt
+#
+#    - name: list all files
+#      command:   ls -lart
+

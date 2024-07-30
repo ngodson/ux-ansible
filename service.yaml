@@ -1,0 +1,15 @@
+-
+  name: Check httpd service and email if service is down
+  hosts: localhost
+
+  tasks:
+    - name: checking httpd service
+      command: httpd service status
+      register: result
+
+    - mail:
+        to: ngodson321@gmail.com
+        subject: Httpd service is down
+        body: Kindly check service as it is currently down.
+        when: result.stdout.find('down') != -1
+        ignore_errors: true

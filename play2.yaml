@@ -1,0 +1,31 @@
+-
+  name: play two file
+  hosts: ubuntu-server
+
+  tasks:
+
+    - name: install apache server to remote
+      become: yes
+      apt:
+        name: apache2
+        update_cache: yes
+        state: latest
+
+    - name: check if service is running
+      become: yes
+      command: systemctl status apache2
+      register: apache_service
+
+    - mail:
+        to: ngodson321@gmail.com
+        subject: Httpd service is down
+        body: Kindly check service as it is currently down.
+        when: apache_service.Active.find('running') != -1
+
+#    - name: gather facts
+#      debug:
+#        var: ansible_facts
+#
+#    - name: run only on Linux OS
+#      command: echo "running on ubuntu"
+#      when: ansible_facts.os_family == 'Debian'

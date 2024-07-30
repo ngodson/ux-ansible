@@ -1,0 +1,47 @@
+-
+  name: creating of loops
+  hosts: ubuntu-server
+  vars:
+    packages:
+      - name: nginx
+        required: True
+      - name: Install MYSQL Server
+        required: True
+      - name: python3
+        required: True
+      - name: java-1.8.0-openjdk
+        required: True
+      - name: apache2
+        required: True
+
+
+
+  tasks:
+
+    - name: create file
+      file:
+        path: ./file.txt
+        state: touch
+    - name: Installing '{{ packages.name }}' to Ubuntu
+      apt:
+        name: '{{ item.name }}'
+        state: present
+      loop: '{{ packages }}'
+
+#    - include_vars: vars.txt
+#    - name: install apps using vars
+#      command: echo '{{ packages }}'
+#      loop: '{{ packages }}'
+
+
+#    - name: create "{{ item }}"
+#      command: echo "{{ item }}"
+#      user: name='{{ name }}' state=present
+#      loop:
+#        - John
+#        - Godson
+#        - Adams
+#        - Wikes
+#        - Fred
+#  tags:
+#    looping_steps

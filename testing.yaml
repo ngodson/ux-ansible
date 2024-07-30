@@ -1,0 +1,10 @@
+-
+  name: First playbook
+  hosts: ubuntu-server
+  tasks:
+
+    - name: Installing python to host
+      become: yes
+      apt:
+        name: python
+        state: present

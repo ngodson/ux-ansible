@@ -1,0 +1,9 @@
+ip_address: 176.334.23.1277
+serverName: windows
+ip1: 168.169.1.0
+ip2: 168.168.2.1
+packages:
+  - java
+  - python
+  - ruby
+  - go
