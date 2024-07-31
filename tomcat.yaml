@@ -1,0 +1,59 @@
+-
+  name: tomcat installation
+  hosts: localhost
+
+  vars:
+    user: tomcat
+    path: /opt/tomcat
+
+
+  tasks:
+    - name: update system packages
+      apt:
+        upgrade: dist
+        update_cache: yes
+
+    - name: Install Java
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Java Version
+      command: java --version
+
+    - name: create '{{ user }}' user
+      user:
+        name: '{{ user }}'
+
+    - name: create '{{ user }}' group
+      group:
+        name: '{{ user }}'
+
+    - name: create tomcat directory
+      file:
+        path: '{{ path }}'
+        state: directory
+        owner: '{{ user }}'
+        group: '{{ user }}'
+        recurse: yes
+        mode: 755
+
+    - name: download and unzip tomcat
+      unarchive:
+        src: https://downloads.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
+        dest: '{{ path }}'
+        remote_src: yes
+
+    - name: Assign all privilege to tomcat
+      file:
+        path: '{{ path }}'
+        owner: '{{ user }}'
+        group: '{{ user }}'
+        mode: 755
+        recurse: yes
+
+    - name: Enable '{{ user }}'
+      command: sh /opt/tomcat/apache-tomcat-9.0.91/bin/startup.sh
+
+    - name: Allow tcp connections
+      command: sudo ufw allow 8080/tcp
